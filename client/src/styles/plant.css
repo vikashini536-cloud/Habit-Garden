@@ -1,0 +1,117 @@
+/* Plant drawing. Stage shape comes from the SVG elements in Plant.jsx.
+   Wilt and recovery are CSS transitions on the leaves and stem, so a watered plant
+   visibly lifts back up when the backend says it has recovered. */
+
+.plant {
+  width: 100%;
+  max-width: 150px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  transition: filter 1.2s ease;
+}
+
+.plant__soil {
+  fill: var(--color-soil);
+  opacity: 0.6;
+}
+
+.plant__seed {
+  fill: #8a6a48;
+}
+
+.plant__stem {
+  fill: none;
+  stroke: var(--color-stem);
+  stroke-width: 3;
+  stroke-linecap: round;
+  transform-origin: 60px 124px;
+  transform-box: view-box;
+  transition: transform 1.2s ease-out;
+}
+
+.plant__leaf {
+  transform-origin: 0 0;
+  transform-box: view-box;
+  transition: transform 1.2s ease-out;
+}
+
+.plant__leaf-shape {
+  fill: var(--color-leaf);
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: leaf-unfurl 0.7s ease-out both;
+}
+
+/* Lifted: leaves point up and out. */
+.plant--healthy .plant__leaf {
+  transform: rotate(calc(var(--side) * -35deg));
+}
+
+/* Slightly tired: leaves start to droop, the stem leans a little. */
+.plant--slight .plant__leaf {
+  transform: rotate(calc(var(--side) * 15deg));
+}
+
+.plant--slight .plant__stem {
+  transform: rotate(3deg);
+}
+
+/* Wilted: leaves hang down, the stem bends, and colors fade. */
+.plant--wilted .plant__leaf {
+  transform: rotate(calc(var(--side) * 60deg));
+}
+
+.plant--wilted .plant__stem {
+  transform: rotate(7deg);
+}
+
+.plant--wilted {
+  filter: saturate(0.5) brightness(0.97);
+}
+
+.plant__flower circle {
+  fill: var(--color-bloom);
+}
+
+.plant__flower .plant__flower-center {
+  fill: #f3d36b;
+}
+
+.plant__flower {
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: bloom 0.9s ease-out both;
+}
+
+@keyframes leaf-unfurl {
+  from {
+    transform: scale(0.2);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes bloom {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plant,
+  .plant *,
+  .plant__stem,
+  .plant__leaf {
+    transition: none !important;
+    animation: none !important;
+  }
+}
